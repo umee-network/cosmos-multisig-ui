@@ -12,6 +12,7 @@ import MultisigMembers from "../../../components/dataViews/MultisigMembers";
 import Page from "../../../components/layout/Page";
 import StackableContainer from "../../../components/layout/StackableContainer";
 import FlexibleTransactionForm from "../../../components/forms/FlexibleTransactionForm";
+import registry from "../../../lib/messageRegistry";
 
 function participantPubkeysFromMultisig(multisigPubkey) {
   return multisigPubkey.value.pubkeys;
@@ -40,7 +41,7 @@ const multipage = (_props) => {
   const fetchMultisig = async (address) => {
     setAccountError(null);
     try {
-      const client = await StargateClient.connect(state.chain.nodeAddress);
+      const client = await StargateClient.connect(state.chain.nodeAddress, { registry });
       const tempHoldings = await client.getBalance(address, state.chain.denom);
       const tempAccountOnChain = await getMultisigAccount(address, client);
       setHoldings(tempHoldings);

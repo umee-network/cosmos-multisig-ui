@@ -8,6 +8,7 @@ import Input from "../../components/inputs/Input";
 import { useAppContext } from "../../context/AppContext";
 import Select from "../inputs/Select";
 import StackableContainer from "../layout/StackableContainer";
+import registry from "../../lib/messageRegistry";
 
 const ChainSelect = () => {
   const { state, dispatch } = useAppContext();
@@ -123,7 +124,7 @@ const ChainSelect = () => {
       }
 
       // test client connection
-      const client = await StargateClient.connect(nodeAddress);
+      const client = await StargateClient.connect(nodeAddress, { registry });
       await client.getHeight();
 
       // change app state
@@ -176,7 +177,7 @@ const ChainSelect = () => {
     setChainError(null);
     try {
       // test client connection
-      const client = await StargateClient.connect(tempNodeAddress);
+      const client = await StargateClient.connect(tempNodeAddress, { registry });
       await client.getHeight();
 
       // change app state

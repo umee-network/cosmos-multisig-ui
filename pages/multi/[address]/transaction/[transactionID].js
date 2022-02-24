@@ -16,6 +16,7 @@ import ThresholdInfo from "../../../../components/dataViews/ThresholdInfo";
 import TransactionInfo from "../../../../components/dataViews/TransactionInfo";
 import TransactionSigning from "../../../../components/forms/TransactionSigning";
 import CompletedTransaction from "../../../../components/dataViews/CompletedTransaction";
+import registry from "../../../../lib/messageRegistry";
 
 export async function getServerSideProps(context) {
   // get transaction info
@@ -73,7 +74,7 @@ const transactionPage = ({
 
   const fetchMultisig = async (address) => {
     try {
-      const client = await StargateClient.connect(state.chain.nodeAddress);
+      const client = await StargateClient.connect(state.chain.nodeAddress, { registry });
       const tempHoldings = await client.getBalance(address, state.chain.denom);
       const tempAccountOnChain = await getMultisigAccount(address, client);
       setHoldings(tempHoldings);
@@ -97,7 +98,7 @@ const transactionPage = ({
         bodyBytes,
         new Map(currentSignatures.map((s) => [s.address, fromBase64(s.signature)])),
       );
-      const broadcaster = await StargateClient.connect(state.chain.nodeAddress);
+      const broadcaster = await StargateClient.connect(state.chain.nodeAddress, { registry });
       const result = await broadcaster.broadcastTx(
         Uint8Array.from(TxRaw.encode(signedTx).finish()),
       );

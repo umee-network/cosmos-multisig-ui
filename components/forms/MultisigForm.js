@@ -9,6 +9,7 @@ import Input from "../inputs/Input";
 import StackableContainer from "../layout/StackableContainer";
 import ThresholdInput from "../inputs/ThresholdInput";
 import { exampleAddress, examplePubkey } from "../../lib/displayHelpers";
+import registry from "../../lib/messageRegistry";
 
 const emptyPubKeyGroup = () => {
   return { address: "", compressedPubkey: "", keyError: "", isPubkey: false };
@@ -49,7 +50,7 @@ const MultiSigForm = (props) => {
   };
 
   const getPubkeyFromNode = async (address) => {
-    const client = await StargateClient.connect(state.chain.nodeAddress);
+    const client = await StargateClient.connect(state.chain.nodeAddress, { registry });
     const accountOnChain = await client.getAccount(address);
     console.log(accountOnChain);
     if (!accountOnChain || !accountOnChain.pubkey) {
