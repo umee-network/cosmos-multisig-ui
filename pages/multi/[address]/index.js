@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { pubkeyToAddress, StargateClient } from "@cosmjs/stargate";
+import { pubkeyToAddress } from "@cosmjs/amino";
+import { StargateClient } from "@cosmjs/stargate";
 import { useRouter } from "next/router";
 
 import { useAppContext } from "../../../context/AppContext";
