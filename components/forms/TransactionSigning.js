@@ -7,6 +7,7 @@ import { useAppContext } from "../../context/AppContext";
 import Button from "../inputs/Button";
 import HashView from "../dataViews/HashView";
 import StackableContainer from "../layout/StackableContainer";
+import registry from "../../lib/messageRegistry";
 
 const TransactionSigning = (props) => {
   const { state } = useAppContext();
@@ -40,7 +41,7 @@ const TransactionSigning = (props) => {
       },
     };
     const offlineSigner = window.getOfflineSignerOnlyAmino(state.chain.chainId);
-    const signingClient = await SigningStargateClient.offline(offlineSigner);
+    const signingClient = await SigningStargateClient.offline(offlineSigner, { registry });
     const signerData = {
       accountNumber: props.tx.accountNumber,
       sequence: props.tx.sequence,
