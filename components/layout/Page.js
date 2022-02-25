@@ -66,7 +66,7 @@ const Page = (props) => {
             Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
           color: white;
           min-height: 100vh;
-          background-color: #ccc;
+          background-color: #fff;
           font-size: 16px;
           margin: 0;
         }

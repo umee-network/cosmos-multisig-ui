@@ -477,10 +477,10 @@
     ws "^7"
     xstream "^11.14.0"
 
-"@cosmjs/stargate@npm:stargate-umee@0.27.1-umee3":
-  version "0.27.1-umee3"
-  resolved "https://registry.yarnpkg.com/stargate-umee/-/stargate-umee-0.27.1-umee3.tgz#0ac85884786e09336862a30b46888bbee131c794"
-  integrity sha512-T4O3KSpe0Z9UfLtiWISmTiFoE+NhBlCA9Z3qO2wg1PCbcuScmkt+vb+Pw1sHUi+iDoF6VmIm74lHjogk04MHJA==
+"@cosmjs/stargate@npm:stargate-umee@0.27.1-umee4":
+  version "0.27.1-umee4"
+  resolved "https://registry.yarnpkg.com/stargate-umee/-/stargate-umee-0.27.1-umee4.tgz#f5e71186becc30dfe46d68a6917be865d9ef47e1"
+  integrity sha512-k80PCfRoRZBWl8lG5/wDU+4RMWYkOMXIqkyaLaA323vAc53kl8FB8AzWQCWduNDx2UuxxeB6c4vVkqP2e8KR6Q==
   dependencies:
     "@confio/ics23" "^0.6.8"
     "@cosmjs/amino" "workspace:packages/amino"

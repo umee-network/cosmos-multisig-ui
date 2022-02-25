@@ -1,6 +1,7 @@
 import React from "react";
 import axios from "axios";
-import { StargateClient, makeMultisignedTx } from "@cosmjs/stargate";
+import { StargateClient } from "@cosmjs/stargate";
+import * as stargate from "@cosmjs/stargate";
 import { TxRaw } from "cosmjs-types/cosmos/tx/v1beta1/tx";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
@@ -91,7 +92,7 @@ const transactionPage = ({
       setBroadcastError("");
 
       const bodyBytes = fromBase64(currentSignatures[0].bodyBytes);
-      const signedTx = makeMultisignedTx(
+      const signedTx = stargate.makeMultisignedTx(
         accountOnChain.pubkey,
         txInfo.sequence,
         txInfo.fee,
@@ -108,6 +109,7 @@ const transactionPage = ({
       });
       setTransactionHash(result.transactionHash);
     } catch (e) {
+      console.error(e);
       setIsBroadcasting(false);
       setBroadcastError(e.message);
     }
