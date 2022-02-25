@@ -76,6 +76,7 @@ const transactionPage = ({
       const client = await StargateClient.connect(state.chain.nodeAddress);
       const tempHoldings = await client.getBalance(address, state.chain.denom);
       const tempAccountOnChain = await getMultisigAccount(address, client);
+      console.log("MULTI", tempAccountOnChain);
       setHoldings(tempHoldings);
       setAccountOnChain(tempAccountOnChain);
     } catch (error) {
@@ -146,6 +147,7 @@ const transactionPage = ({
         {!transactionHash && (
           <TransactionSigning
             tx={txInfo}
+            accountOnChain={accountOnChain}
             transactionID={transactionID}
             signatures={currentSignatures}
             addSignature={addSignature}

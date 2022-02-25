@@ -7,7 +7,7 @@ import { useAppContext } from "../../context/AppContext";
 import Button from "../inputs/Button";
 import HashView from "../dataViews/HashView";
 import StackableContainer from "../layout/StackableContainer";
-import { AminoTypes } from "@cosmjs/stargate";
+import { pubkeyToAddress } from "@cosmjs/amino";
 
 const TransactionSigning = (props) => {
   const { state } = useAppContext();
@@ -31,6 +31,13 @@ const TransactionSigning = (props) => {
     console.log("wallet connected:", tempWalletAccount);
     window.keplr_wallet = tempWalletAccount;
   };
+
+  const isValidSigner =
+    props.accountOnChain &&
+    props.accountOnChain.pubkey.value.pubkeys.find(
+      (pubkey) =>
+        pubkeyToAddress(pubkey, state.chain.addressPrefix) === walletAccount.bech32Address,
+    );
 
   const signTransaction = async () => {
     window.keplr.defaultOptions = {
@@ -86,7 +93,7 @@ const TransactionSigning = (props) => {
             <p>You've signed this transaction.</p>
           </div>
         </StackableContainer>
-      ) : (
+      ) : isValidSigner ? (
         <>
           <h2>Sign this transaction</h2>
           {walletAccount ? (
@@ -94,6 +101,11 @@ const TransactionSigning = (props) => {
           ) : (
             <Button label="Connect Wallet" onClick={connectWallet} />
           )}
+        </>
+      ) : (
+        <>
+          <h2>The connected wallet is not a valid signer</h2>
+          <h3>Try switching wallets</h3>
         </>
       )}
       {sigError && (
@@ -105,13 +117,20 @@ const TransactionSigning = (props) => {
       )}
       <h2>Current Signers</h2>
       <StackableContainer lessPadding lessMargin lessRadius>
-        {props.signatures.map((signature, i) => (
-          <StackableContainer lessPadding lessRadius lessMargin key={`${signature.address}_${i}`}>
-            <HashView hash={signature.address} />
-          </StackableContainer>
-        ))}
-
-        {props.signatures.length === 0 && <p>No signatures yet</p>}
+        {props.accountOnChain
+          ? props.accountOnChain.pubkey.value.pubkeys.map((pubkey, i) => (
+              <StackableContainer lessPadding lessRadius lessMargin key={i}>
+                {props.signatures.find(
+                  (s) => s.address === pubkeyToAddress(pubkey, state.chain.addressPrefix),
+                ) ? (
+                  <span>✅ Signature received</span>
+                ) : (
+                  <span>⌛ Waiting for signature</span>
+                )}
+                <HashView hash={pubkeyToAddress(pubkey, state.chain.addressPrefix)} />
+              </StackableContainer>
+            ))
+          : null}
       </StackableContainer>
       <style jsx>{`
         p {
