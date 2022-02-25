@@ -112,6 +112,28 @@ function blankVoteJSON(voter, proposalId = -1) {
   );
 }
 
+function blankCreateVestingAccountJSON(fromAddress) {
+  return JSON.stringify(
+    {
+      typeUrl: "/cosmos.vesting.v1beta1.MsgCreateVestingAccount",
+      value: {
+        fromAddress,
+        toAddress: "",
+        amount: [
+          {
+            denom: "uumee",
+            amount: "0",
+          },
+        ],
+        endTime: "",
+        delayed: false,
+      },
+    },
+    null,
+    2,
+  );
+}
+
 const FlexibleTransactionForm = (props) => {
   const { state } = useAppContext();
 
@@ -322,6 +344,11 @@ const FlexibleTransactionForm = (props) => {
       <Button label="Undelegate" onClick={() => newMessage(blankUndelegateJSON(props.address))} />
       <Button label="Redelegate" onClick={() => newMessage(blankRedelegateJSON(props.address))} />
       <Button label="Vote" onClick={() => newMessage(blankVoteJSON(props.address))} />
+      <Button
+        label="CreateVestingAccount"
+        onClick={() => newMessage(blankCreateVestingAccountJSON(props.address))}
+      />
+      <Button label="Blank" onClick={() => newMessage(blankMessageJSON)} />
 
       <br />
       <br />
