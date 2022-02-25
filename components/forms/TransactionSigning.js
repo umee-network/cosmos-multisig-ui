@@ -131,13 +131,6 @@ const TransactionSigning = (props) => {
               </StackableContainer>
             ))
           : null}
-        {props.signatures.map((signature, i) => (
-          <StackableContainer lessPadding lessRadius lessMargin key={`${signature.address}_${i}`}>
-            <HashView hash={signature.address} />
-          </StackableContainer>
-        ))}
-
-        {props.signatures.length === 0 && <p>No signatures yet</p>}
       </StackableContainer>
       <style jsx>{`
         p {
