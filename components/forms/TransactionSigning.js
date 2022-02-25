@@ -7,7 +7,7 @@ import { useAppContext } from "../../context/AppContext";
 import Button from "../inputs/Button";
 import HashView from "../dataViews/HashView";
 import StackableContainer from "../layout/StackableContainer";
-import { AminoTypes } from "@cosmjs/stargate";
+import { pubkeyToAddress } from "@cosmjs/amino";
 
 const TransactionSigning = (props) => {
   const { state } = useAppContext();
@@ -105,6 +105,20 @@ const TransactionSigning = (props) => {
       )}
       <h2>Current Signers</h2>
       <StackableContainer lessPadding lessMargin lessRadius>
+        {props.accountOnChain
+          ? props.accountOnChain.pubkey.value.pubkeys.map((pubkey, i) => (
+              <StackableContainer lessPadding lessRadius lessMargin key={i}>
+                {props.signatures.find(
+                  (s) => s.address === pubkeyToAddress(pubkey, state.chain.addressPrefix),
+                ) ? (
+                  <span>✅ Signature received</span>
+                ) : (
+                  <span>⌛ Waiting for signature</span>
+                )}
+                <HashView hash={pubkeyToAddress(pubkey, state.chain.addressPrefix)} />
+              </StackableContainer>
+            ))
+          : null}
         {props.signatures.map((signature, i) => (
           <StackableContainer lessPadding lessRadius lessMargin key={`${signature.address}_${i}`}>
             <HashView hash={signature.address} />
