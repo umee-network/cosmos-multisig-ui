@@ -32,6 +32,13 @@ const TransactionSigning = (props) => {
     window.keplr_wallet = tempWalletAccount;
   };
 
+  const isValidSigner =
+    props.accountOnChain &&
+    props.accountOnChain.pubkey.value.pubkeys.find(
+      (pubkey) =>
+        pubkeyToAddress(pubkey, state.chain.addressPrefix) === walletAccount.bech32Address,
+    );
+
   const signTransaction = async () => {
     window.keplr.defaultOptions = {
       sign: {
@@ -86,7 +93,7 @@ const TransactionSigning = (props) => {
             <p>You've signed this transaction.</p>
           </div>
         </StackableContainer>
-      ) : (
+      ) : isValidSigner ? (
         <>
           <h2>Sign this transaction</h2>
           {walletAccount ? (
@@ -94,6 +101,11 @@ const TransactionSigning = (props) => {
           ) : (
             <Button label="Connect Wallet" onClick={connectWallet} />
           )}
+        </>
+      ) : (
+        <>
+          <h2>The connected wallet is not a valid signer</h2>
+          <h3>Try switching wallets</h3>
         </>
       )}
       {sigError && (
