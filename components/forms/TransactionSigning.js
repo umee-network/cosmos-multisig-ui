@@ -34,9 +34,10 @@ const TransactionSigning = (props) => {
 
   const isValidSigner =
     props.accountOnChain &&
-    props.accountOnChain.pubkey.value.pubkeys.find(
-      (pubkey) =>
-        pubkeyToAddress(pubkey, state.chain.addressPrefix) === walletAccount.bech32Address,
+    props.accountOnChain.pubkey.value.pubkeys.find((pubkey) =>
+      walletAccount
+        ? pubkeyToAddress(pubkey, state.chain.addressPrefix) === walletAccount.bech32Address
+        : false,
     );
 
   const signTransaction = async () => {
